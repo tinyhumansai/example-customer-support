@@ -1,0 +1,15 @@
+[project]
+name = "example-customer-support"
+version = "0.1.0"
+description = "Robylon.ai Customer Support POC — powered by Neocortex Memory SDK"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "tinyhumansai>=0.5.0",
+    "streamlit>=1.30",
+    "python-dotenv>=1.0",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.backends._legacy:_Backend"
