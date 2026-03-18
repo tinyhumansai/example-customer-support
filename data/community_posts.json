@@ -1,0 +1,167 @@
+[
+  {
+    "key": "sync-conflict-resolution",
+    "content": "When you hit a sync conflict in CloudSync Pro, don't just pick 'keep local' blindly. Go to Settings > Sync > Conflict Log to see exactly which files diverged. In most cases the server version is newer. If you edited offline, use the 3-way merge viewer (Settings > Advanced > Merge Tool) to combine changes. This saved us from losing a week of work on a shared project.",
+    "metadata": {
+      "source": "discord",
+      "channel": "#troubleshooting",
+      "author": "poweruser_mike",
+      "upvotes": 47,
+      "date": "2024-11-15"
+    }
+  },
+  {
+    "key": "api-rate-limit-workaround",
+    "content": "If you're hitting the 100 req/min API rate limit on CloudSync Pro, batch your file operations. Instead of syncing files one-by-one, use the bulk endpoint POST /api/v2/sync/batch which accepts up to 50 files per call. Also enable request deduplication in your client config (set dedupe_window_ms=5000). Our throughput went from 100 files/min to 2000 files/min.",
+    "metadata": {
+      "source": "forum",
+      "channel": "api-developers",
+      "author": "devops_sarah",
+      "upvotes": 83,
+      "date": "2024-10-22"
+    }
+  },
+  {
+    "key": "sso-azure-ad-setup",
+    "content": "Setting up SSO with Azure AD on CloudSync Pro Enterprise: 1) Go to Admin > Identity > SAML. 2) Download the SP metadata XML. 3) In Azure portal, create Enterprise App, upload the metadata. 4) Map the 'email' claim to user.mail and 'groups' to user.groups. 5) Back in CloudSync, enable 'Auto-provision users on first login'. Common gotcha: Azure sends groups as GUIDs by default — you need to configure it to send group names instead, or map GUIDs in CloudSync under Admin > Group Mappings.",
+    "metadata": {
+      "source": "forum",
+      "channel": "enterprise-setup",
+      "author": "it_admin_jen",
+      "upvotes": 62,
+      "date": "2024-12-01"
+    }
+  },
+  {
+    "key": "mobile-crash-ios-fix",
+    "content": "CloudSync Pro iOS app crashes on launch after updating to v4.2.1? Clear the app cache: Settings > Apps > CloudSync > Clear Cache. If that doesn't work, delete and reinstall — your files are safe in the cloud. The root cause is a corrupted local DB migration. The team pushed a fix in v4.2.2 but if you can't update yet, the cache clear works.",
+    "metadata": {
+      "source": "discord",
+      "channel": "#mobile-help",
+      "author": "appdev_carlos",
+      "upvotes": 31,
+      "date": "2024-11-28"
+    }
+  },
+  {
+    "key": "webhook-delivery-failures",
+    "content": "Webhooks failing with 'delivery_timeout'? CloudSync Pro webhooks have a 5-second timeout. If your endpoint is slow (e.g., doing DB writes synchronously), return 202 Accepted immediately and process async. Also check that your endpoint handles CloudSync's retry logic — it sends up to 3 retries with exponential backoff (10s, 30s, 90s). You can test webhooks locally using the CLI: cloudsync webhook test --url http://localhost:3000/hook --event file.updated",
+    "metadata": {
+      "source": "forum",
+      "channel": "api-developers",
+      "author": "backend_dev_alex",
+      "upvotes": 55,
+      "date": "2024-09-18"
+    }
+  },
+  {
+    "key": "permission-inheritance-fix",
+    "content": "If child folders aren't inheriting parent permissions, check if 'Break Inheritance' was accidentally set. Go to the parent folder > Share > Advanced > Inheritance. If it says 'Custom', click 'Reset to Inherited'. Also, newly created folders inherit at creation time — if you changed parent perms after creating subfolders, run Admin > Tools > Propagate Permissions to push changes down the tree.",
+    "metadata": {
+      "source": "discord",
+      "channel": "#admin-help",
+      "author": "sysadmin_pat",
+      "upvotes": 38,
+      "date": "2024-10-05"
+    }
+  },
+  {
+    "key": "storage-quota-optimization",
+    "content": "Running out of storage on CloudSync Pro Business? Before upgrading: 1) Check Admin > Storage > Analytics for large file hotspots. 2) Enable deduplication (Admin > Storage > Dedup) — this typically saves 15-30% for teams. 3) Set up lifecycle rules to auto-archive files not accessed in 90 days to cold storage (1/3 the cost). 4) Check for orphaned file versions under Admin > Storage > Version Cleanup.",
+    "metadata": {
+      "source": "forum",
+      "channel": "best-practices",
+      "author": "cloud_architect_dana",
+      "upvotes": 71,
+      "date": "2024-11-10"
+    }
+  },
+  {
+    "key": "migration-from-dropbox",
+    "content": "Migrated 2TB from Dropbox to CloudSync Pro in under 4 hours. Key tips: 1) Use the official Migration Tool (Admin > Import > Cloud Services > Dropbox). 2) Run it off-hours — it saturates bandwidth. 3) Map Dropbox shared folders to CloudSync Teams before starting. 4) Enable 'Preserve timestamps' to keep original dates. 5) After migration, verify with the audit report (Admin > Import > Last Report). Only hiccup: Dropbox Paper docs convert to .md files, not .docx.",
+    "metadata": {
+      "source": "forum",
+      "channel": "migration-stories",
+      "author": "it_lead_marcus",
+      "upvotes": 44,
+      "date": "2024-08-30"
+    }
+  },
+  {
+    "key": "desktop-client-high-cpu",
+    "content": "CloudSync Pro desktop client eating 40%+ CPU? Usually caused by the real-time watcher scanning too many files. Fix: 1) Add large build directories (node_modules, .git, __pycache__) to the ignore list in Preferences > Sync > Exclude Patterns. 2) Reduce the watcher polling interval from 1s to 5s in Preferences > Advanced > Watcher Interval. 3) If you have >100K files, switch to 'Scheduled Sync' mode instead of real-time.",
+    "metadata": {
+      "source": "discord",
+      "channel": "#desktop-app",
+      "author": "developer_nina",
+      "upvotes": 59,
+      "date": "2024-12-10"
+    }
+  },
+  {
+    "key": "two-factor-recovery",
+    "content": "Locked out of CloudSync Pro with 2FA? If you have recovery codes (given during 2FA setup), use one at the login screen > 'Use Recovery Code'. If you lost those too, your admin can temporarily disable 2FA for your account via Admin > Users > [your name] > Security > Reset 2FA. After that, set up 2FA again and SAVE the recovery codes somewhere safe this time (password manager recommended).",
+    "metadata": {
+      "source": "discord",
+      "channel": "#general-help",
+      "author": "support_volunteer_ray",
+      "upvotes": 26,
+      "date": "2024-10-15"
+    }
+  },
+  {
+    "key": "selective-sync-setup",
+    "content": "To sync only specific folders on CloudSync Pro desktop: Right-click the tray icon > Preferences > Selective Sync. Uncheck folders you don't need locally. Pro tip: create a 'Heavy Assets' folder for large files (videos, PSDs) and exclude it from selective sync on laptops. Team members who need those files can sync them on-demand by right-clicking > 'Make Available Offline' in the web UI.",
+    "metadata": {
+      "source": "forum",
+      "channel": "tips-tricks",
+      "author": "designer_lisa",
+      "upvotes": 34,
+      "date": "2024-09-25"
+    }
+  },
+  {
+    "key": "audit-log-compliance",
+    "content": "For SOC2 compliance with CloudSync Pro: Enable comprehensive audit logging under Admin > Compliance > Audit Logs. Set retention to 1 year minimum. Key events to monitor: file.downloaded, share.created, admin.settings_changed, user.login_failed. Export logs monthly via the API (GET /api/v2/audit?start=...&end=...) or configure auto-export to your SIEM via Admin > Integrations > SIEM.",
+    "metadata": {
+      "source": "forum",
+      "channel": "enterprise-setup",
+      "author": "compliance_officer_tom",
+      "upvotes": 41,
+      "date": "2024-11-20"
+    }
+  },
+  {
+    "key": "large-file-upload-tips",
+    "content": "Uploading files >5GB to CloudSync Pro? Enable chunked uploads in Preferences > Upload > Chunked Mode. Set chunk size to 100MB for stable connections, 10MB for flaky ones. The upload is resumable — if it fails midway, it picks up from the last completed chunk. For programmatic uploads, use the tus protocol endpoint at /api/v2/upload/tus. We regularly upload 50GB video files this way without issues.",
+    "metadata": {
+      "source": "discord",
+      "channel": "#media-team",
+      "author": "video_editor_sam",
+      "upvotes": 29,
+      "date": "2024-12-05"
+    }
+  },
+  {
+    "key": "shared-link-security",
+    "content": "Making shared links more secure in CloudSync Pro: 1) Always set an expiration (Share > Link Settings > Expires). 2) Add a password for sensitive files. 3) Disable downloads if you just want viewing (Share > Permissions > View Only). 4) Enable 'Require Login' to track who accessed it. 5) Use watermarking for confidential PDFs (Share > Advanced > Watermark with viewer's email). All link access is logged in Admin > Audit > Share Events.",
+    "metadata": {
+      "source": "forum",
+      "channel": "security-best-practices",
+      "author": "security_eng_anna",
+      "upvotes": 67,
+      "date": "2024-10-30"
+    }
+  },
+  {
+    "key": "team-folder-structure",
+    "content": "Best folder structure for CloudSync Pro Teams: Create top-level Team Folders per department (Engineering, Marketing, Sales). Within each, use a standard layout: /Active (current projects), /Archive (completed), /Templates. Set permissions at the department level and let them inherit. Use naming conventions like YYYY-MM_ProjectName for project folders. Enable Admin > Policies > Naming Rules to enforce this automatically.",
+    "metadata": {
+      "source": "forum",
+      "channel": "best-practices",
+      "author": "pm_leader_dave",
+      "upvotes": 52,
+      "date": "2024-11-05"
+    }
+  }
+]
