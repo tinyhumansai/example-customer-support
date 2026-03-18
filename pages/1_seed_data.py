@@ -42,6 +42,42 @@ with st.expander("Namespace mapping"):
 | `customer:{id}` | `customers.json` | Per-customer profile + interaction history |
 """)
 
+# Data preview & edit
+st.subheader("Data Preview & Edit")
+st.caption("View or edit the JSON files directly. Changes are saved to disk — re-seed after editing.")
+
+DATA_FILES = {
+    "community_posts.json": community,
+    "resolved_tickets.json": tickets,
+    "kb_articles.json": kb,
+    "customers.json": customers,
+}
+
+tabs = st.tabs([f"{name} ({len(data)})" for name, data in DATA_FILES.items()])
+
+for tab, (filename, data) in zip(tabs, DATA_FILES.items()):
+    with tab:
+        view_tab, edit_tab = st.tabs(["View", "Edit"])
+        with view_tab:
+            st.json(data)
+        with edit_tab:
+            edited = st.text_area(
+                f"Edit {filename}",
+                value=json.dumps(data, indent=2),
+                height=400,
+                key=f"edit-{filename}",
+            )
+            if st.button("Save", key=f"save-{filename}", type="primary"):
+                try:
+                    parsed = json.loads(edited)
+                    with open(DATA_DIR / filename, "w") as f:
+                        json.dump(parsed, f, indent=2)
+                        f.write("\n")
+                    st.success(f"Saved {filename}! Re-seed to ingest the updated data.")
+                    st.rerun()
+                except json.JSONDecodeError as e:
+                    st.error(f"Invalid JSON: {e}")
+
 st.divider()
 
 # Actions
