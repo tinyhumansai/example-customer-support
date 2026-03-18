@@ -1,0 +1,92 @@
+[
+  {
+    "key": "kb-api-auth-v1",
+    "content": "# API Authentication (v1 — DEPRECATED)\n\nCloudSync Pro API v1 uses Basic Authentication. Include your username and password in the Authorization header:\n\n```\nAuthorization: Basic base64(username:password)\n```\n\nExample:\n```bash\ncurl -H 'Authorization: Basic dXNlcjpwYXNz' https://api.cloudsync.example/v1/files\n```\n\nRate limit: 100 requests per minute per user.\n\n**Note**: API v1 will be sunset on March 31, 2025. Please migrate to v2 OAuth-based auth.",
+    "metadata": {
+      "version": "v1",
+      "status": "deprecated",
+      "category": "api",
+      "created_date": "2022-03-15",
+      "deprecated_date": "2024-06-01",
+      "replacement": "kb-api-auth-v2"
+    }
+  },
+  {
+    "key": "kb-api-auth-v2",
+    "content": "# API Authentication (v2 — Current)\n\nCloudSync Pro API v2 uses OAuth 2.0 with API keys for server-to-server and OAuth flows for user-facing apps.\n\n## Server-to-Server (API Key)\n1. Generate an API key: Admin > API > Keys > Create Key\n2. Include in requests:\n```\nAuthorization: Bearer YOUR_API_KEY\n```\n\n## User-Facing Apps (OAuth 2.0)\n1. Register your app: Admin > API > OAuth Apps > Register\n2. Use Authorization Code flow with PKCE\n3. Token endpoint: POST /oauth/token\n4. Scopes: files.read, files.write, admin.read, admin.write\n\nRate limit: 1000 requests per minute per API key. Burst: 50 requests per second.\n\nAll API keys can be scoped to specific namespaces and operations for least-privilege access.",
+    "metadata": {
+      "version": "v2",
+      "status": "current",
+      "category": "api",
+      "created_date": "2024-01-10",
+      "last_updated": "2024-11-01"
+    }
+  },
+  {
+    "key": "kb-file-sharing",
+    "content": "# Sharing Files and Folders\n\nCloudSync Pro offers multiple ways to share content:\n\n## Share Links\n- Right-click any file/folder > Share > Create Link\n- Options: View-only, Download allowed, Edit allowed\n- Security: password protection, expiration date, watermarking (PDF only)\n- Analytics: track views and downloads in Share > Link Analytics\n\n## Team Sharing\n- Add users/groups directly: Right-click > Share > Add People\n- Permission levels: Viewer, Commenter, Editor, Admin\n- Inheritance: subfolder permissions inherit from parent by default\n\n## External Collaboration\n- Requires Enterprise plan or external sharing enabled by admin\n- External users get limited guest accounts (no storage quota)\n- Admin can restrict external sharing to specific domains\n\n## Best Practices\n- Use Team Folders for ongoing collaboration\n- Use Share Links for one-off sharing\n- Set expiration on all external share links\n- Review shared content monthly via Admin > Sharing > Audit",
+    "metadata": {
+      "version": "v2",
+      "status": "current",
+      "category": "features",
+      "created_date": "2024-02-20",
+      "last_updated": "2024-10-15"
+    }
+  },
+  {
+    "key": "kb-sync-setup-v1",
+    "content": "# Desktop Sync Setup (v1 — DEPRECATED)\n\nCloudSync Pro desktop sync v1 uses a simple folder mirror approach.\n\n## Setup\n1. Install the desktop client from cloudsync.example/download\n2. Sign in with your credentials\n3. Choose a local sync folder (default: ~/CloudSync)\n4. All cloud files will download to this folder\n\n## Limitations\n- Full sync only (no selective sync)\n- No conflict resolution (last-write-wins)\n- Maximum 50,000 files\n- No support for symlinks or hardlinks\n\n**This sync engine is replaced by v2 Smart Sync. Upgrade your desktop client to v4.0+.**",
+    "metadata": {
+      "version": "v1",
+      "status": "deprecated",
+      "category": "desktop",
+      "created_date": "2021-08-01",
+      "deprecated_date": "2024-03-01",
+      "replacement": "kb-sync-setup-v2"
+    }
+  },
+  {
+    "key": "kb-sync-setup-v2",
+    "content": "# Desktop Sync Setup (v2 Smart Sync — Current)\n\nCloudSync Pro Smart Sync keeps files in the cloud and downloads on-demand.\n\n## Setup\n1. Install desktop client v4.0+ from cloudsync.example/download\n2. Sign in (SSO supported)\n3. Choose sync mode:\n   - **Smart Sync (default)**: Files appear as placeholders; download when opened\n   - **Selective Sync**: Choose specific folders to keep offline\n   - **Full Sync**: Mirror everything locally (legacy mode)\n\n## Features\n- Handles 1M+ files efficiently\n- 3-way conflict resolution with visual merge tool\n- Bandwidth throttling: Preferences > Network > Limits\n- Exclude patterns: Preferences > Sync > Exclude (e.g., node_modules, .git)\n- LAN sync: auto-detects peers on local network for faster initial sync\n\n## Troubleshooting\n- Stuck on 'Preparing': Delete watcher.db from app data folder and restart\n- High CPU: Add exclude patterns for large directories\n- Slow sync: Check bandwidth throttling settings and network conditions",
+    "metadata": {
+      "version": "v2",
+      "status": "current",
+      "category": "desktop",
+      "created_date": "2024-03-01",
+      "last_updated": "2024-12-01"
+    }
+  },
+  {
+    "key": "kb-admin-user-management",
+    "content": "# User Management Guide\n\n## Adding Users\n- Manual: Admin > Users > Add User (email invite)\n- Bulk: Admin > Users > Import CSV (columns: email, name, role, groups)\n- Auto-provisioning: Enable via SSO settings (Admin > Identity > Auto-provision)\n\n## Roles\n- **Member**: Standard file access based on folder permissions\n- **Power User**: Member + can create Team Folders and share externally\n- **Admin**: Full admin panel access\n- **Super Admin**: Admin + can manage other admins and billing\n\n## Groups\n- Create groups: Admin > Groups > Create\n- Sync from AD/LDAP: Admin > Identity > Directory Sync\n- Use groups for permissions instead of individual users\n\n## Offboarding\n- Suspend user: Admin > Users > [user] > Suspend (preserves files)\n- Transfer files: Admin > Users > [user] > Transfer Ownership\n- Delete user: Removes account, transferred files remain\n\n## Monitoring\n- Active users: Admin > Dashboard > Usage\n- Login activity: Admin > Audit > Logins\n- Storage per user: Admin > Users > sort by Storage Used",
+    "metadata": {
+      "version": "v1",
+      "status": "current",
+      "category": "admin",
+      "created_date": "2023-06-15",
+      "last_updated": "2024-09-20"
+    }
+  },
+  {
+    "key": "kb-backup-recovery",
+    "content": "# Backup and Recovery\n\n## Automatic Backups\nCloudSync Pro maintains:\n- **File versions**: Every save creates a version (configurable retention: 30/60/90/unlimited days)\n- **Deleted file recovery**: Trash retains files for 30 days (Enterprise: 90 days)\n- **Geo-redundant storage**: All data replicated across 3 regions\n\n## Manual Backup\n- Export all data: Admin > Data > Export (generates downloadable archive)\n- API backup: GET /api/v2/backup/snapshot (creates point-in-time snapshot)\n- Scheduled exports: Admin > Data > Scheduled Export (daily/weekly to S3, GCS, or Azure Blob)\n\n## Recovery Procedures\n- Single file: Right-click > Version History > Restore\n- Deleted file: Trash > Right-click > Restore\n- Folder rollback: Admin > Tools > Folder Rollback (restores folder to point-in-time)\n- Full account: Contact support for full account restoration from geo-redundant backup\n\n## Disaster Recovery SLA\n- RPO (Recovery Point Objective): 1 hour\n- RTO (Recovery Time Objective): 4 hours\n- 99.99% durability guarantee",
+    "metadata": {
+      "version": "v1",
+      "status": "current",
+      "category": "admin",
+      "created_date": "2023-09-01",
+      "last_updated": "2024-11-10"
+    }
+  },
+  {
+    "key": "kb-mobile-app",
+    "content": "# Mobile App Guide (iOS & Android)\n\n## Installation\n- iOS: App Store > search 'CloudSync Pro'\n- Android: Google Play > search 'CloudSync Pro'\n- MDM deployment: Available via Apple Business Manager and Android Enterprise\n\n## Features\n- Browse and search all cloud files\n- Offline access: Star files/folders for offline availability\n- Photo auto-upload: Settings > Photos > Auto Upload\n- Document scanning: Tap + > Scan Document\n- Share to CloudSync: Use system share sheet from any app\n\n## Settings\n- Upload on cellular: Settings > Network > Cellular Upload (default: off)\n- Photo upload quality: Settings > Photos > Quality (Original/High/Medium)\n- Passcode lock: Settings > Security > App Lock\n- Cache size: Settings > Storage > Cache Limit\n\n## Troubleshooting\n- App crashes: Clear cache (Settings > Storage > Clear Cache) or reinstall\n- Sync issues: Pull down to refresh, check network connection\n- Upload stuck: Check network settings, ensure sufficient cloud storage",
+    "metadata": {
+      "version": "v2",
+      "status": "current",
+      "category": "mobile",
+      "created_date": "2024-01-15",
+      "last_updated": "2024-12-05"
+    }
+  }
+]

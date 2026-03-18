@@ -1,0 +1,113 @@
+[
+  {
+    "id": "acme-corp",
+    "name": "Acme Corp",
+    "plan": "Enterprise",
+    "seats": 250,
+    "contact": {
+      "name": "James Chen",
+      "email": "j.chen@acme-corp.example",
+      "role": "VP of Engineering",
+      "preferred_channel": "email"
+    },
+    "notes": "Long-standing customer since 2022. Heavy API usage for CI/CD integrations. Evaluating expansion to APAC offices (500 additional seats). Very technical team — prefers detailed explanations.",
+    "interactions": [
+      {
+        "key": "acme-interaction-1",
+        "date": "2024-10-10",
+        "type": "support",
+        "summary": "James reported their nightly backup scripts failing intermittently. We traced it to API rate limits being hit during peak batch operations. Recommended connection pooling and upgraded their rate limit tier. James was appreciative of the fast turnaround and asked about bulk pricing for APAC expansion."
+      },
+      {
+        "key": "acme-interaction-2",
+        "date": "2024-11-20",
+        "type": "support",
+        "summary": "503 errors during peak hours affecting the engineering team. Root cause was concurrent connection limits being exceeded by automation scripts. Increased limit and helped implement connection pooling. James mentioned they're presenting CloudSync to the APAC team next quarter."
+      },
+      {
+        "key": "acme-interaction-3",
+        "date": "2024-12-10",
+        "type": "support",
+        "summary": "Desktop sync client stuck after Windows Update KB5034441. Affected 40 engineers. Provided immediate workaround (restart service + delete watcher.db) and confirmed fix in client v4.3.1. James emphasized the need for proactive notifications when OS updates break things."
+      },
+      {
+        "key": "acme-interaction-4",
+        "date": "2025-01-08",
+        "type": "check-in",
+        "summary": "Quarterly business review. James confirmed APAC expansion is greenlit for Q2 2025 — need proposal for 500 additional Enterprise seats. Discussed dedicated support channel for APAC timezone. James also requested early access to the new real-time collaboration feature."
+      }
+    ]
+  },
+  {
+    "id": "techstart-inc",
+    "name": "TechStart Inc",
+    "plan": "Business",
+    "seats": 45,
+    "contact": {
+      "name": "Maria Rodriguez",
+      "email": "maria@techstart.example",
+      "role": "CTO",
+      "preferred_channel": "slack"
+    },
+    "notes": "Fast-growing startup, recently Series B. Uses CloudSync for engineering docs and design assets. Price-sensitive but high growth potential. Maria is hands-on technical and prefers quick, direct answers.",
+    "interactions": [
+      {
+        "key": "techstart-interaction-1",
+        "date": "2024-09-28",
+        "type": "support",
+        "summary": "Maria couldn't share folders with external design contractors. Turned out to be a group policy conflict — Engineering group had external sharing disabled. Fixed by updating group policy to allow view-only + watermark external sharing. Maria mentioned they're hiring 20 more engineers and might need to upgrade from Business to Enterprise."
+      },
+      {
+        "key": "techstart-interaction-2",
+        "date": "2024-10-15",
+        "type": "support",
+        "summary": "API uploads showing as 0 bytes. Maria's team was using the deprecated v1 upload endpoint. Migrated them to v2 tus-based uploads. Provided Python and Node.js sample code. Maria was very impressed with the sample code and shared it on their internal wiki."
+      },
+      {
+        "key": "techstart-interaction-3",
+        "date": "2024-12-08",
+        "type": "support",
+        "summary": "Mobile sync not working on cellular for the sales team. Root cause: iOS Low Data Mode + CloudSync photo-specific Wi-Fi restriction. Quick resolution. Maria asked about Enterprise pricing since they're expecting to hit 100 users by Q1."
+      }
+    ]
+  },
+  {
+    "id": "global-media",
+    "name": "Global Media Group",
+    "plan": "Enterprise",
+    "seats": 800,
+    "contact": {
+      "name": "Sarah Thompson",
+      "email": "s.thompson@globalmedia.example",
+      "role": "Director of IT Operations",
+      "preferred_channel": "email"
+    },
+    "notes": "Major media company. Stores large video/image assets (50TB+). Compliance-critical — SOC2 and GDPR requirements. Recently went through an SSO migration. Very concerned about audit trails and data sovereignty. Budget is not an issue but reliability is paramount.",
+    "interactions": [
+      {
+        "key": "global-interaction-1",
+        "date": "2024-11-05",
+        "type": "escalation",
+        "summary": "CRITICAL: Audit log gaps discovered during SOC2 prep. 3-day window of missing file access events. Root cause: disk space issue on log pipeline during maintenance. Reprocessed raw event buffer, provided corrected report and signed attestation letter for their auditor. Sarah was initially very upset but appreciated the thorough remediation and transparency."
+      },
+      {
+        "key": "global-interaction-2",
+        "date": "2024-11-15",
+        "type": "support",
+        "summary": "Storage dashboard showing 3x actual usage, alarming finance team. Explained version history storage, set 90-day retention policy, reclaimed 1.8TB. Set up monthly storage reports for finance. Sarah mentioned they're evaluating data sovereignty options for EU content."
+      },
+      {
+        "key": "global-interaction-3",
+        "date": "2024-12-01",
+        "type": "support",
+        "summary": "SSO broken after Azure AD tenant migration. All 800 users locked out. Priority escalation — resolved in 2 hours by updating SAML config. Created Azure AD migration checklist for their IT team. Sarah requested a dedicated status page for planned maintenance affecting authentication."
+      },
+      {
+        "key": "global-interaction-4",
+        "date": "2025-01-15",
+        "type": "check-in",
+        "summary": "Annual security review meeting. Sarah raised concerns about GDPR data residency for EU operations. Discussed the upcoming EU-region storage option (Q2 2025). Also reviewed their incident history — Sarah noted improvement in response times. Requested quarterly security review cadence."
+      }
+    ]
+  }
+]

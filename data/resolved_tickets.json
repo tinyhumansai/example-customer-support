@@ -1,0 +1,122 @@
+[
+  {
+    "key": "ticket-1001",
+    "content": "Issue: Customer reported 503 Service Unavailable errors when accessing shared folders during peak hours (9-11 AM EST).\n\nDiagnosis: The customer's Enterprise plan was hitting concurrent connection limits. Their automation scripts were opening 200+ simultaneous API connections for batch file processing, exceeding the 150 concurrent connection limit.\n\nResolution: 1) Increased concurrent connection limit to 500 (Enterprise+ tier). 2) Helped customer implement connection pooling in their scripts, reducing concurrent connections by 60%. 3) Enabled request queuing on their account (Admin > API > Queue Overflow = true) as a safety net.\n\nRoot cause: Automation scripts not using connection pooling.",
+    "metadata": {
+      "customer_id": "acme-corp",
+      "priority": "high",
+      "category": "api-performance",
+      "satisfaction_score": 4.8,
+      "resolved_date": "2024-11-20",
+      "resolution_time_hours": 6
+    }
+  },
+  {
+    "key": "ticket-1002",
+    "content": "Issue: SSO login failing for all users after Azure AD tenant migration. Users seeing 'SAML Response Invalid — Issuer Mismatch' error.\n\nDiagnosis: Customer migrated their Azure AD to a new tenant but didn't update the SAML configuration in CloudSync Pro. The Issuer URL and Entity ID in the SAML assertion no longer matched what CloudSync expected.\n\nResolution: 1) Downloaded new SP metadata from Azure AD new tenant. 2) Updated SAML config in CloudSync Admin > Identity > SAML with new Issuer URL, Certificate, and Login URL. 3) Tested with a single user before rolling out. 4) Documented the Azure AD migration checklist for the customer's IT team.\n\nRoot cause: SAML config not updated after Azure AD tenant migration.",
+    "metadata": {
+      "customer_id": "global-media",
+      "priority": "critical",
+      "category": "authentication",
+      "satisfaction_score": 4.5,
+      "resolved_date": "2024-12-01",
+      "resolution_time_hours": 2
+    }
+  },
+  {
+    "key": "ticket-1003",
+    "content": "Issue: Files uploaded via API showing as 0 bytes in the web UI, though the API returns success.\n\nDiagnosis: Customer was using the v1 upload endpoint (POST /api/v1/files) which has a known issue with files >2GB on certain storage backends. The upload succeeds but the file content isn't properly committed.\n\nResolution: 1) Migrated customer's integration to v2 chunked upload endpoint (POST /api/v2/upload/tus). 2) Re-uploaded affected files. 3) Added a v1 deprecation warning to their API dashboard. 4) Provided sample code for tus-based uploads in Python and Node.js.\n\nRoot cause: Using deprecated v1 upload endpoint for large files.",
+    "metadata": {
+      "customer_id": "techstart-inc",
+      "priority": "high",
+      "category": "api-integration",
+      "satisfaction_score": 4.9,
+      "resolved_date": "2024-10-15",
+      "resolution_time_hours": 4
+    }
+  },
+  {
+    "key": "ticket-1004",
+    "content": "Issue: Sync client stuck in 'Preparing to sync...' state on Windows machines after Windows Update KB5034441.\n\nDiagnosis: The Windows update changed filesystem notification APIs that CloudSync's real-time watcher depends on. The watcher was receiving malformed events and entering a retry loop without ever completing initialization.\n\nResolution: 1) Pushed emergency client update v4.3.1 that handles the new Windows notification format. 2) For immediate workaround: restart the CloudSync service (services.msc > CloudSync Agent > Restart). 3) If restart doesn't help: delete %APPDATA%/CloudSync/watcher.db and restart.\n\nRoot cause: Windows Update KB5034441 changed filesystem notification APIs.",
+    "metadata": {
+      "customer_id": "acme-corp",
+      "priority": "critical",
+      "category": "desktop-client",
+      "satisfaction_score": 4.2,
+      "resolved_date": "2024-12-10",
+      "resolution_time_hours": 24
+    }
+  },
+  {
+    "key": "ticket-1005",
+    "content": "Issue: Customer's compliance report showing 'audit gaps' — certain file access events not being logged for a 3-day window.\n\nDiagnosis: During a scheduled maintenance window, the audit log pipeline's Kafka consumer fell behind due to a disk space issue on the log aggregator. Events were buffered but not processed. Once disk space was freed, the backlog was processed but the timestamps showed the processing time, not the event time.\n\nResolution: 1) Reprocessed the raw event buffer with original timestamps. 2) Generated a corrected audit report for the affected window. 3) Added disk space monitoring alerts for the log pipeline. 4) Provided the customer a signed attestation letter for their SOC2 auditor explaining the incident and remediation.\n\nRoot cause: Disk space exhaustion on audit log pipeline during maintenance.",
+    "metadata": {
+      "customer_id": "global-media",
+      "priority": "critical",
+      "category": "compliance",
+      "satisfaction_score": 4.6,
+      "resolved_date": "2024-11-05",
+      "resolution_time_hours": 48
+    }
+  },
+  {
+    "key": "ticket-1006",
+    "content": "Issue: Customer unable to share folders with external collaborators. Share dialog shows 'External sharing disabled by policy' even though admin claims it's enabled.\n\nDiagnosis: The customer had two conflicting policies: a global policy enabling external sharing, and a group-level policy (applied to the 'Engineering' group) that disabled it. Group policies override global policies in CloudSync Pro.\n\nResolution: 1) Identified the conflicting group policy via Admin > Policies > Audit. 2) Updated the Engineering group policy to allow external sharing with the restriction of 'view-only + watermark' for external users. 3) Documented their full policy hierarchy for future reference.\n\nRoot cause: Group-level policy overriding global external sharing setting.",
+    "metadata": {
+      "customer_id": "techstart-inc",
+      "priority": "medium",
+      "category": "permissions",
+      "satisfaction_score": 4.7,
+      "resolved_date": "2024-09-28",
+      "resolution_time_hours": 3
+    }
+  },
+  {
+    "key": "ticket-1007",
+    "content": "Issue: Webhooks for 'file.deleted' events not firing, though 'file.created' and 'file.updated' work fine.\n\nDiagnosis: Customer's webhook subscription was created with event filter ['file.created', 'file.updated'] — the 'file.deleted' event was never subscribed to. The webhook management UI had a bug where selecting 'All file events' didn't actually include delete events.\n\nResolution: 1) Updated webhook subscription to explicitly include 'file.deleted'. 2) Reported the UI bug to engineering (JIRA-4521). 3) Verified webhook delivery for all three event types. 4) Recommended the customer use the API to manage webhook subscriptions for reliability: PUT /api/v2/webhooks/{id} with explicit event list.\n\nRoot cause: Webhook UI bug causing 'file.deleted' to not be included in 'All file events' selection.",
+    "metadata": {
+      "customer_id": "acme-corp",
+      "priority": "medium",
+      "category": "api-integration",
+      "satisfaction_score": 4.4,
+      "resolved_date": "2024-10-20",
+      "resolution_time_hours": 5
+    }
+  },
+  {
+    "key": "ticket-1008",
+    "content": "Issue: Customer's storage usage dashboard showing 3x actual usage. Finance team concerned about unexpected charges.\n\nDiagnosis: The storage calculation was including file version history in the total. Customer had version retention set to 'unlimited' (the default) and had been using CloudSync for 2 years. The 3x figure was accurate — they had 3x more data in versions than in current files.\n\nResolution: 1) Explained version history storage calculation. 2) Helped set version retention policy to 90 days (Admin > Storage > Version Policy). 3) Ran a version cleanup job that reclaimed 1.8TB. 4) Set up a monthly storage report email for their finance team.\n\nRoot cause: Unlimited version retention accumulating historical file versions.",
+    "metadata": {
+      "customer_id": "global-media",
+      "priority": "medium",
+      "category": "billing",
+      "satisfaction_score": 5.0,
+      "resolved_date": "2024-11-15",
+      "resolution_time_hours": 2
+    }
+  },
+  {
+    "key": "ticket-1009",
+    "content": "Issue: Mobile app not syncing photos when on cellular data, even though 'Sync on Cellular' is enabled.\n\nDiagnosis: The customer's device had iOS 'Low Data Mode' enabled for cellular, which restricts background data for all apps. CloudSync Pro respects this OS-level setting. Additionally, the customer had the CloudSync photo upload set to 'Wi-Fi Only' (a separate setting from general sync).\n\nResolution: 1) Guided customer to disable iOS Low Data Mode (Settings > Cellular > Low Data Mode > Off). 2) Changed CloudSync photo upload setting from 'Wi-Fi Only' to 'Any Network' (CloudSync app > Settings > Photos > Upload Network). 3) Noted that video uploads remain Wi-Fi only by default due to size.\n\nRoot cause: iOS Low Data Mode + CloudSync photo-specific Wi-Fi restriction.",
+    "metadata": {
+      "customer_id": "techstart-inc",
+      "priority": "low",
+      "category": "mobile",
+      "satisfaction_score": 4.8,
+      "resolved_date": "2024-12-08",
+      "resolution_time_hours": 1
+    }
+  },
+  {
+    "key": "ticket-1010",
+    "content": "Issue: Customer's automated backup pipeline failing with 'InsufficientPermissions' when writing to a designated backup folder.\n\nDiagnosis: The API service account used for backups had 'Editor' permissions on the backup folder, but the folder was inside a Team Folder with 'Restricted Upload' policy enabled. This policy requires 'Admin' level access to write files, even if the user has Editor permissions on the specific folder.\n\nResolution: 1) Granted the service account 'Admin' role on the backup Team Folder. 2) Alternatively, showed how to create the backup folder outside the restricted Team Folder. 3) Documented the interaction between Team Folder policies and individual permissions. 4) Recommended creating a dedicated 'Automation' Team Folder with relaxed policies for service accounts.\n\nRoot cause: Team Folder 'Restricted Upload' policy overriding folder-level Editor permissions.",
+    "metadata": {
+      "customer_id": "acme-corp",
+      "priority": "high",
+      "category": "permissions",
+      "satisfaction_score": 4.6,
+      "resolved_date": "2024-11-25",
+      "resolution_time_hours": 3
+    }
+  }
+]
