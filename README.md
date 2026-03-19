@@ -1,6 +1,6 @@
-# Robylon.ai x Neocortex — Customer Support POC
+# Customer Support POC
 
-AI-powered customer support demo using the **Neocortex Memory SDK** (`tinyhumansai`). Built for the Robylon.ai pitch to demonstrate how memory-backed AI agents handle real support scenarios for a fictional SaaS product, **CloudSync Pro**.
+AI-powered customer support demo using the **Neocortex Memory SDK** (`tinyhumansai`). Built to demonstrate how memory-backed AI agents handle real support scenarios for a fictional SaaS product, **CloudSync Pro**.
 
 ## Use Cases
 
@@ -79,7 +79,7 @@ Then:
 The SDK upserts on `(namespace, key)`. Re-ingesting an item with a fresh `updated_at` timestamp naturally reinforces it — the item becomes more prominent in recall results.
 
 ### Decay = Deletion
-`delete_memory` removes outdated content. In production, Robylon could automate this based on article age, negative feedback count, or content freshness scores.
+`delete_memory` removes outdated content. In production, This could automate this based on article age, negative feedback count, or content freshness scores.
 
 ### Namespace Isolation
 Each use case has its own namespace. Customer data is further isolated per customer (`customer:acme-corp`). The support agent can recall across all namespaces simultaneously for comprehensive answers.
